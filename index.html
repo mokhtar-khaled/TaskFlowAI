@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TaskFlow AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">TaskFlow<em>AI</em></span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-filter="all">
+        <span class="nav-icon">◈</span> All Tasks
+        <span class="nav-count" id="count-all">0</span>
+      </button>
+      <button class="nav-item" data-filter="today">
+        <span class="nav-icon">◉</span> Today
+        <span class="nav-count" id="count-today">0</span>
+      </button>
+      <button class="nav-item" data-filter="high">
+        <span class="nav-icon">▲</span> High Priority
+        <span class="nav-count" id="count-high">0</span>
+      </button>
+      <button class="nav-item" data-filter="done">
+        <span class="nav-icon">✓</span> Completed
+        <span class="nav-count" id="count-done">0</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-stats">
+      <p class="stats-label">Progress today</p>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <p class="stats-numbers"><span id="done-count">0</span> / <span id="total-count">0</span> done</p>
+    </div>
+
+    <button class="ai-toggle-btn" id="ai-toggle">
+      <span>✦ Ask AI Assistant</span>
+    </button>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <header class="main-header">
+      <div class="header-left">
+        <h1 id="view-title">All Tasks</h1>
+        <p class="header-sub" id="header-date"></p>
+      </div>
+      <button class="add-btn" id="open-modal">+ New Task</button>
+    </header>
+
+    <!-- FILTER TABS -->
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-status="all">All</button>
+      <button class="filter-tab" data-status="pending">Pending</button>
+      <button class="filter-tab" data-status="in-progress">In Progress</button>
+      <button class="filter-tab" data-status="done">Done</button>
+    </div>
+
+    <!-- TASK LIST -->
+    <div class="task-list" id="task-list">
+      <!-- Tasks injected here by JS -->
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state" id="empty-state" style="display:none;">
+      <div class="empty-icon">◈</div>
+      <h3>No tasks here</h3>
+      <p>Add a new task or ask AI to help you plan your goals</p>
+    </div>
+
+  </main>
+
+  <!-- ADD/EDIT TASK MODAL -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-title">New Task</h2>
+        <button class="modal-close" id="modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="edit-id" />
+
+        <div class="form-group">
+          <label>Task title</label>
+          <input type="text" id="input-title" placeholder="What needs to be done?" />
+        </div>
+
+        <div class="form-group">
+          <label>Description <span class="optional">(optional)</span></label>
+          <textarea id="input-desc" placeholder="Add more details..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Priority</label>
+            <select id="input-priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select id="input-status">
+              <option value="pending">Pending</option>
+              <option value="in-progress">In Progress</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Due date</label>
+            <input type="date" id="input-date" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Category <span class="optional">(optional)</span></label>
+          <input type="text" id="input-category" placeholder="e.g. Work, Personal, Study..." />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="modal-cancel">Cancel</button>
+        <button class="btn-primary" id="modal-save">Save Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI CHAT PANEL -->
+  <div class="ai-panel" id="ai-panel">
+    <div class="ai-panel-header">
+      <div class="ai-title">
+        <span class="ai-dot"></span>
+        <h3>AI Assistant</h3>
+      </div>
+      <button class="ai-close" id="ai-close">✕</button>
+    </div>
+
+    <div class="ai-messages" id="ai-messages">
+      <div class="ai-msg ai-msg--bot">
+        <div class="ai-bubble">
+          Hi! I'm your AI assistant. I can help you:<br><br>
+          • Break down big goals into tasks<br>
+          • Suggest what to work on next<br>
+          • Summarize your current workload<br><br>
+          What would you like help with?
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-suggestions" id="ai-suggestions">
+      <button class="suggestion-chip" onclick="sendSuggestion('Summarize my current tasks')">Summarize my tasks</button>
+      <button class="suggestion-chip" onclick="sendSuggestion('What should I focus on today?')">What to focus on?</button>
+      <button class="suggestion-chip" onclick="sendSuggestion('Help me break down a big goal into smaller tasks')">Break down a goal</button>
+    </div>
+
+    <div class="ai-input-row">
+      <input type="text" id="ai-input" placeholder="Ask anything about your tasks..." />
+      <button class="ai-send" id="ai-send">↑</button>
+    </div>
+  </div>
+
+  <!-- OVERLAY for AI panel on mobile -->
+  <div class="panel-overlay" id="panel-overlay"></div>
+
+  <script src="js/app.js"></script>
+  <script src="js/ai.js"></script>
+</body>
+</html>
