@@ -847,3 +847,134 @@ body {
     flex-direction: column;
   }
 }
+/* =================== NAV SECTION LABELS =================== */
+.nav-section-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--text-3);
+  padding: 4px 12px;
+  margin-top: 4px;
+}
+
+/* =================== NEW GOAL BUTTON =================== */
+.nav-item--add {
+  color: var(--text-3);
+  font-size: 13px;
+  border: 1px dashed var(--border);
+  margin-top: 2px;
+}
+.nav-item--add:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+
+/* =================== GOAL DOT =================== */
+.goal-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* =================== GOAL NAV TITLE =================== */
+.goal-nav-title {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =================== GOAL TAG ON TASK CARD =================== */
+.task-goal-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid;
+  font-weight: 500;
+}
+
+/* =================== GOAL LIST HEADER =================== */
+.goal-list-header {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+.goal-list-header-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.goal-list-header-top h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  flex: 1;
+}
+.goal-list-desc {
+  font-size: 13px;
+  color: var(--text-3);
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+/* =================== GOAL PROGRESS BAR =================== */
+.goal-progress-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.goal-progress-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-4);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.goal-progress-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--accent);
+  transition: width 0.4s ease;
+  width: 0%;
+}
+.goal-progress-pct {
+  font-size: 12px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+/* =================== GOAL DETAIL MODAL TASKS =================== */
+.goal-task-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 4px;
+  border-bottom: 1px solid var(--border);
+}
+.goal-task-row:last-child { border-bottom: none; }
+.goal-task-title {
+  font-size: 14px;
+  color: var(--text);
+  flex: 1;
+}
+.done-text {
+  text-decoration: line-through;
+  color: var(--text-3);
+}
+
+/* =================== MODAL WIDE =================== */
+.modal--wide { width: 600px; }
+
+/* =================== DANGER BUTTON =================== */
+.btn-danger:hover {
+  background: var(--red-bg) !important;
+  color: var(--red) !important;
+  border-color: var(--red) !important;
+}

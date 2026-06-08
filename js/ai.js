@@ -12,6 +12,17 @@ let conversationHistory = [];
 
 function buildSystemPrompt() {
   const tasks = window.getTasks ? window.getTasks() : [];
+  const goals = window.getGoals ? window.getGoals() : [];
+
+  const goalsSummary = goals.length === 0
+    ? 'No goals yet.'
+    : goals.map(g => {
+        const goalTasks = tasks.filter(t => t.goalId === g.id);
+        const done = goalTasks.filter(t => t.status === 'done').length;
+        const pct  = goalTasks.length === 0 ? 0 : Math.round((done / goalTasks.length) * 100);
+        return `- ${g.title} | ${done}/${goalTasks.length} tasks done (${pct}%)${g.description ? ' | ' + g.description : ''}`;
+      }).join('\n');
+  
   const tasksSummary = tasks.length === 0
     ? 'No tasks yet.'
     : tasks.map(t =>
@@ -26,6 +37,9 @@ Your role is to help the user:
 3. Summarize their current workload
 4. Give productivity advice
 5. Create new tasks (see instructions below)
+
+CURRENT GOALS:
+${goalsSummary}
 
 CURRENT TASKS IN THE APP:
 ${tasksSummary}
@@ -45,7 +59,7 @@ STYLE:
 - Be concise and direct. No fluff.
 - Use bullet points for lists.
 - Be encouraging but honest.
-- Keep responses under 200 words unless the user asks for detail.`;
+- Under 200 words unless the user asks for detail.`;
 }
 
 // ── Send message ──────────────────────────────
